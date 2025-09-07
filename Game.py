@@ -1,4 +1,6 @@
 import pygame, sys, random
+from pygame.examples.audiocapture import sound
+
 
 def ball_movement():
     """
@@ -25,6 +27,11 @@ def ball_movement():
             score += 1  # Increase player score
             ball_speed_y *= -1  # Reverse ball's vertical direction
             # TODO Task 6: Add sound effects HERE
+            pygame.init()
+            pygame.mixer.init()
+            sound_effect = pygame.mixer.Sound(f"hog-rider.wav")
+            sound_effect.play()
+            sound_effect.fadeout(2000)
 
     # Ball collision with top boundary
     if ball.top <= 0:
