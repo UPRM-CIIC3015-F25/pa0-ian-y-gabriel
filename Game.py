@@ -1,12 +1,18 @@
 import pygame, sys, random
 from pygame.examples.audiocapture import sound
 
+Big_Boss = pygame.image.load("Big_Boss.png")
+Big_Boss = pygame.transform.scale(Big_Boss, (100, 100))
+
+how_wild = pygame.image.load("Wild_Hunt.png")
+how_wild = pygame.transform.scale(how_wild, (400, 400))
+
 
 def ball_movement():
     """
     Handles the movement of the ball and collision detection with the player and screen boundaries.
     """
-    global ball_speed_x, ball_speed_y, score, start
+    global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, music
 
     # Move the ball
     ball.x += ball_speed_x
@@ -26,6 +32,19 @@ def ball_movement():
             # TODO Task 2: Fix score to increase by 1
             score += 1  # Increase player score
             ball_speed_y *= -1  # Reverse ball's vertical direction
+            if score == 10:
+                show_image = True
+                pygame.init()
+                pygame.mixer.init()
+                sound_effect = pygame.mixer.Sound(f"snake-eater-outro.wav ")
+                sound_effect.play()
+            if score == 30:
+                show_image2 = True
+                pygame.init()
+                pygame.mixer.init()
+                sound_effect = pygame.mixer.Sound(f"wild_hunt_laugh_limbus.wav")
+                sound_effect.play()
+                sound_effect.fadeout(2000)
             # TODO Task 6: Add sound effects HERE
             pygame.init()
             pygame.mixer.init()
@@ -65,11 +84,20 @@ def restart():
     ball.center = (screen_width / 2, screen_height / 2)  # Reset ball position to center
     ball_speed_y, ball_speed_x = 0, 0  # Stop ball movement
     score = 0  # Reset player score
+    pygame.init()
+    pygame.mixer.init()
+    sound_effect = pygame.mixer.Sound(f"bedman_announcer_mod_intro.wav")
+    sound_effect.play()
 
 # General setup
 pygame.mixer.pre_init(44100, -16, 1, 1024)
 pygame.init()
 clock = pygame.time.Clock()
+
+#Adding music
+pygame.mixer.music.load('01. Through Patches of Violet.mp3')
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1)
 
 # Main Window setup
 screen_width = 500  # Screen width (can be adjusted)
@@ -95,6 +123,8 @@ player_speed = 0
 
 # Score Text setup
 score = 0
+show_image = False
+show_image2 = False
 basic_font = pygame.font.Font('freesansbold.ttf', 32)  # Font for displaying score
 
 start = False  # Indicates if the game has started
@@ -135,6 +165,12 @@ while True:
     player_text = basic_font.render(f'{score}', False, light_grey)  # Render player score
     screen.blit(player_text, (screen_width/2 - 15, 10))  # Display score on screen
 
+    if show_image:
+        screen.blit(Big_Boss, (screen_width // 2 - 50, screen_height // 2 - 50))
+
+    if show_image2:
+        how_wild_rect = how_wild.get_rect(center=(screen_width // 2, screen_height // 2))
+        screen.blit(how_wild, how_wild_rect)
     # Update display
     pygame.display.flip()
     clock.tick(60)  # Maintain 60 frames per second
