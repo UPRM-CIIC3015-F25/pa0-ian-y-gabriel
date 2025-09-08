@@ -89,6 +89,7 @@ def restart():
     sound_effect = pygame.mixer.Sound(f"bedman_announcer_mod_intro.wav")
     sound_effect.play()
 
+
 # General setup
 pygame.mixer.pre_init(44100, -16, 1, 1024)
 pygame.init()
