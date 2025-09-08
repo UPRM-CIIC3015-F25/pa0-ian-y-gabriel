@@ -1,10 +1,17 @@
 import pygame, sys, random
 
+# Load images
+Big_Boss = pygame.image.load("Big_Boss.png")
+Big_Boss = pygame.transform.scale(Big_Boss, (100, 100))
+
+how_wild = pygame.image.load("Wild_Hunt.png")
+how_wild = pygame.transform.scale(how_wild, (400, 400))
+
 def ball_movement():
     """
     Handles the movement of the ball and collision detection with the player and screen boundaries.
     """
-    global ball_speed_x, ball_speed_y, score, start
+    global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, music
 
     # Move the ball
     ball.x += ball_speed_x
@@ -24,9 +31,28 @@ def ball_movement():
             # Completed task 2
             score += 1  # Increase player score
             ball_speed_y *= -1  # Reverse ball's vertical direction
-            # Completed task 6
+
             if not is_muted:
+                #Completed task 6
+                pygame.init()
+                pygame.mixer.init()
+                sound_effect = pygame.mixer.Sound("hog-rider.wav")
                 sound_effect.play()
+                sound_effect.fadeout(2000)
+
+            if score == 10:
+                show_image = True
+                pygame.init()
+                pygame.mixer.init()
+                sound_effect = pygame.mixer.Sound("snake-eater-outro.wav")
+                sound_effect.play()
+            if score == 30:
+                show_image2 = True
+                pygame.init()
+                pygame.mixer.init()
+                sound_effect = pygame.mixer.Sound("wild_hunt_laugh_limbus.wav")
+                sound_effect.play()
+                sound_effect.fadeout(2000)
 
     # Ball collision with top boundary
     if ball.top <= 0:
@@ -60,6 +86,10 @@ def restart():
     ball.center = (screen_width / 2, screen_height / 2)  # Reset ball position to center
     ball_speed_y, ball_speed_x = 0, 0  # Stop ball movement
     score = 0  # Reset player score
+    pygame.init()
+    pygame.mixer.init()
+    sound_effect = pygame.mixer.Sound("bedman_announcer_mod_intro.wav")
+    sound_effect.play()
 
 def title_screen():
     """
@@ -121,6 +151,11 @@ pygame.init()
 pygame.mixer.init()
 clock = pygame.time.Clock()
 
+# Adding music
+pygame.mixer.music.load('01. Through Patches of Violet.mp3')
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1)
+
 # Main Window setup
 screen_width = 500  # Screen width (can be adjusted)
 screen_height = 500  # Screen height (can be adjusted)
@@ -136,8 +171,7 @@ red = pygame.Color('red')
 ball = pygame.Rect(screen_width / 2 - 15, screen_height / 2 - 15, 30, 30)  # Ball (centered)
 
 player_height = 15
-player_width = 200 #task 1 done
-
+player_width = 200 # task 1 done
 player = pygame.Rect(screen_width/2 - 45, screen_height - 20, player_width, player_height)  # Player paddle
 
 # Game Variables
@@ -147,11 +181,11 @@ player_speed = 0
 game_state = "title_screen"
 is_muted = False
 
-
 # Score Text setup
 score = 0
+show_image = False
+show_image2 = False
 basic_font = pygame.font.Font('freesansbold.ttf', 32)  # Font for displaying score
-
 start = False  # Indicates if the game has started
 
 # Sound
@@ -194,6 +228,13 @@ while True:
         pygame.draw.ellipse(screen, red, ball)  # Draw ball
         player_text = basic_font.render(f'{score}', False, light_grey)  # Render player score
         screen.blit(player_text, (screen_width/2 - 15, 10))  # Display score on screen
+
+        if show_image:
+            screen.blit(Big_Boss, (screen_width // 2 - 50, screen_height // 2 - 50))
+
+        if show_image2:
+            how_wild_rect = how_wild.get_rect(center=(screen_width // 2, screen_height // 2))
+            screen.blit(how_wild, how_wild_rect)
 
         # Update display
         pygame.display.flip()
