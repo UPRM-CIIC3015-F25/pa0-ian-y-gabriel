@@ -1,5 +1,5 @@
 import pygame, sys, random
-from pygame.examples.audiocapture import sound
+
 
 Big_Boss = pygame.image.load("Big_Boss.png")
 Big_Boss = pygame.transform.scale(Big_Boss, (100, 100))
@@ -145,6 +145,8 @@ while True:
             if event.key == pygame.K_RIGHT:
                 player_speed += 6  # Move paddle right
             if event.key == pygame.K_SPACE:
+                show_image2 = False
+                show_image = False
                 start = True  # Start the ball movement
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_LEFT:
