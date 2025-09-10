@@ -10,12 +10,14 @@ how_wild = pygame.transform.scale(how_wild, (400, 400))
 mark = pygame.image.load("markiplier.png")
 mark = pygame.transform.scale(mark, (200, 200))
 
+vergilus = pygame.image.load("vergilus.png")
+vergilus = pygame.transform.scale(vergilus, (500, 500))
 
 def ball_movement():
     """
     Handles the movement of the ball and collision detection with the player and screen boundaries.
     """
-    global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, show_image3, music
+    global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, show_image3, show_image4, music
 
     # Move the ball
     ball.x += ball_speed_x
@@ -75,6 +77,12 @@ def ball_movement():
                 sound_effect = pygame.mixer.Sound("wild_hunt_laugh_limbus.wav")
                 sound_effect.play()
                 sound_effect.fadeout(2000)
+
+            if score == 67:
+                show_image4 = True
+                sound_effect = pygame.mixer.Sound("danteh.wav")
+                sound_effect.play()
+
 
 
 
@@ -221,6 +229,7 @@ score = 0
 show_image = False
 show_image2 = False
 show_image3 = False
+show_image4 = False
 basic_font = pygame.font.Font('freesansbold.ttf', 32)  # Font for displaying score
 start = False  # Indicates if the game has started
 
@@ -250,6 +259,7 @@ while True:
                     show_image = False
                     show_image2 = False
                     show_image3 = False
+                    show_image4 = False
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
                     player_speed += 6  # Stop moving left
@@ -282,6 +292,9 @@ while True:
             how_wild_rect = how_wild.get_rect(center=(screen_width // 2, screen_height // 2))
             screen.blit(how_wild, how_wild_rect)
 
+        if show_image4:
+            vergilus_rect = vergilus.get_rect(center=(screen_width // 2, screen_height // 2))
+            screen.blit(vergilus, vergilus_rect)
 
         # Update display
         pygame.display.flip()
