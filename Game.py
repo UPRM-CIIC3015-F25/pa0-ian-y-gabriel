@@ -8,14 +8,14 @@ how_wild = pygame.image.load("Wild_Hunt.png")
 how_wild = pygame.transform.scale(how_wild, (400, 400))
 
 mark = pygame.image.load("markiplier.png")
-mark = pygame.transform.scale(mark, (300, 300))
+mark = pygame.transform.scale(mark, (200, 200))
 
 
 def ball_movement():
     """
     Handles the movement of the ball and collision detection with the player and screen boundaries.
     """
-    global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, show_image3,  music
+    global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, show_image3, music
 
     # Move the ball
     ball.x += ball_speed_x
@@ -50,12 +50,9 @@ def ball_movement():
                 pygame.mixer.init()
                 sound_effect = pygame.mixer.Sound("snake-eater-outro.wav")
                 sound_effect.play()
-
             if score == 20:
                 show_image3 = True
-
-
-                sound_effect = pygame.mixer.Sound("markiplier.wav")
+                sound_effect = pygame.mixer.Sound(f"markiplier.wav")
                 sound_effect.play()
             if score == 30:
                 show_image2 = True
@@ -64,6 +61,16 @@ def ball_movement():
                 sound_effect = pygame.mixer.Sound("wild_hunt_laugh_limbus.wav")
                 sound_effect.play()
                 sound_effect.fadeout(2000)
+
+
+
+            # TODO Task 6: Add sound effects HERE
+            pygame.init()
+            pygame.mixer.init()
+            sound_effect = pygame.mixer.Sound(f"hog-rider.wav")
+            sound_effect.play()
+            sound_effect.fadeout(2000)
+
 
     # Ball collision with top boundary
     if ball.top <= 0:
