@@ -1,4 +1,4 @@
-\import pygame, sys, random
+import pygame, sys, random
 
 # Load images
 Big_Boss = pygame.image.load("Big_Boss.png")
@@ -17,7 +17,9 @@ def ball_movement():
     """
     Handles the movement of the ball and collision detection with the player and screen boundaries.
     """
+
     global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, show_image3, show_image4, music, is_muted
+
 
     # Move the ball
     ball.x += ball_speed_x
@@ -92,7 +94,6 @@ def ball_movement():
                     pygame.mixer.Sound("hog-rider.wav").play()
                 except pygame.error:
                     pass
-
 
     # Ball collision with top boundary
     if ball.top <= 0:
