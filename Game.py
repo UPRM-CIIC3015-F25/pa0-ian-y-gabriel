@@ -36,6 +36,15 @@ def ball_movement():
             score += 1  # Increase player score
             ball_speed_y *= -1  # Reverse ball's vertical direction
 
+            # Increase speed by 10%
+            ball_speed_x *= 1.1
+            ball_speed_y *= 1.1
+
+            #ball speed cap
+            max_speed = 15
+            ball_speed_x = max(-max_speed, min(ball_speed_x, max_speed))
+            ball_speed_y = max(-max_speed, min(ball_speed_y, max_speed))
+
             if not is_muted:
                 #Completed task 6
                 pygame.init()
@@ -44,16 +53,21 @@ def ball_movement():
                 sound_effect.play()
                 sound_effect.fadeout(2000)
 
+            #if score = 10 show snake eater starts playing
             if score == 10:
                 show_image = True
                 pygame.init()
                 pygame.mixer.init()
                 sound_effect = pygame.mixer.Sound("snake-eater-outro.wav")
                 sound_effect.play()
+
+            # if score = 20 play "hello everybody my name is markiplier"
             if score == 20:
                 show_image3 = True
                 sound_effect = pygame.mixer.Sound(f"markiplier.wav")
                 sound_effect.play()
+
+            #when score = 30 play wild hunt laughing
             if score == 30:
                 show_image2 = True
                 pygame.init()
@@ -64,7 +78,10 @@ def ball_movement():
 
 
 
+
+
             # TODO Task 6: Add sound effects HERE
+            #plays "hog rider" if ball hits paddle
             pygame.init()
             pygame.mixer.init()
             sound_effect = pygame.mixer.Sound(f"hog-rider.wav")
@@ -243,6 +260,8 @@ while True:
         ball_movement()
         player_movement()
 
+
+
         # Visuals
         screen.fill(bg_color)  # Clear screen with background color
         pygame.draw.rect(screen, light_grey, player)  # Draw player paddle
@@ -251,6 +270,7 @@ while True:
         player_text = basic_font.render(f'{score}', False, light_grey)  # Render player score
         screen.blit(player_text, (screen_width/2 - 15, 10))  # Display score on screen
 
+        #shows all the pngs (wild hunt, big boss, and markiplier)
         if show_image:
             screen.blit(Big_Boss, (screen_width // 2 - 50, screen_height // 2 - 50))
 
@@ -261,6 +281,7 @@ while True:
         if show_image2:
             how_wild_rect = how_wild.get_rect(center=(screen_width // 2, screen_height // 2))
             screen.blit(how_wild, how_wild_rect)
+
 
         # Update display
         pygame.display.flip()
