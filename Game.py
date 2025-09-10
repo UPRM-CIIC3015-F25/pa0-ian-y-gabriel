@@ -7,11 +7,15 @@ Big_Boss = pygame.transform.scale(Big_Boss, (100, 100))
 how_wild = pygame.image.load("Wild_Hunt.png")
 how_wild = pygame.transform.scale(how_wild, (400, 400))
 
+mark = pygame.image.load("markiplier.png")
+mark = pygame.transform.scale(mark, (200, 200))
+
+
 def ball_movement():
     """
     Handles the movement of the ball and collision detection with the player and screen boundaries.
     """
-    global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, music
+    global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, show_image3, music
 
     # Move the ball
     ball.x += ball_speed_x
@@ -46,6 +50,10 @@ def ball_movement():
                 pygame.mixer.init()
                 sound_effect = pygame.mixer.Sound("snake-eater-outro.wav")
                 sound_effect.play()
+            if score == 20:
+                show_image3 = True
+                sound_effect = pygame.mixer.Sound(f"markiplier.wav")
+                sound_effect.play()
             if score == 30:
                 show_image2 = True
                 pygame.init()
@@ -53,6 +61,16 @@ def ball_movement():
                 sound_effect = pygame.mixer.Sound("wild_hunt_laugh_limbus.wav")
                 sound_effect.play()
                 sound_effect.fadeout(2000)
+
+
+
+            # TODO Task 6: Add sound effects HERE
+            pygame.init()
+            pygame.mixer.init()
+            sound_effect = pygame.mixer.Sound(f"hog-rider.wav")
+            sound_effect.play()
+            sound_effect.fadeout(2000)
+
 
     # Ball collision with top boundary
     if ball.top <= 0:
@@ -185,6 +203,7 @@ is_muted = False
 score = 0
 show_image = False
 show_image2 = False
+show_image3 = False
 basic_font = pygame.font.Font('freesansbold.ttf', 32)  # Font for displaying score
 start = False  # Indicates if the game has started
 
@@ -211,6 +230,9 @@ while True:
                     player_speed += 6  # Move paddle right
                 if event.key == pygame.K_SPACE:
                     start = True  # Start the ball movement
+                    show_image = False
+                    show_image2 = False
+                    show_image3 = False
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_LEFT:
                     player_speed += 6  # Stop moving left
@@ -231,6 +253,10 @@ while True:
 
         if show_image:
             screen.blit(Big_Boss, (screen_width // 2 - 50, screen_height // 2 - 50))
+
+        if show_image3:
+            mark_rect = mark.get_rect(center=(screen_width // 2, screen_height // 2))
+            screen.blit(mark, mark_rect)
 
         if show_image2:
             how_wild_rect = how_wild.get_rect(center=(screen_width // 2, screen_height // 2))
