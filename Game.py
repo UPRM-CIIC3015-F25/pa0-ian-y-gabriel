@@ -17,7 +17,9 @@ def ball_movement():
     """
     Handles the movement of the ball and collision detection with the player and screen boundaries.
     """
-    global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, show_image3, show_image4, music
+
+    global ball_speed_x, ball_speed_y, score, start, show_image, show_image2, show_image3, show_image4, music, is_muted
+
 
     # Move the ball
     ball.x += ball_speed_x
@@ -43,59 +45,55 @@ def ball_movement():
             ball_speed_y *= 1.1
 
             #ball speed cap
-            max_speed = 15
+            max_speed = 10
             ball_speed_x = max(-max_speed, min(ball_speed_x, max_speed))
             ball_speed_y = max(-max_speed, min(ball_speed_y, max_speed))
 
             if not is_muted:
                 #Completed task 6
-                pygame.init()
-                pygame.mixer.init()
-                sound_effect = pygame.mixer.Sound("hog-rider.wav")
-                sound_effect.play()
-                sound_effect.fadeout(2000)
+                try:
+                    pygame.mixer.Sound("hog-rider.wav").play()
+                except pygame.error:
+                    pass
 
             #if score = 10 show snake eater starts playing
             if score == 10:
                 show_image = True
-                pygame.init()
-                pygame.mixer.init()
-                sound_effect = pygame.mixer.Sound("snake-eater-outro.wav")
-                sound_effect.play()
+                try:
+                    pygame.mixer.Sound("snake-eater-outro.wav").play()
+                except pygame.error:
+                    pass
 
             # if score = 20 play "hello everybody my name is markiplier"
             if score == 20:
                 show_image3 = True
-                sound_effect = pygame.mixer.Sound(f"markiplier.wav")
-                sound_effect.play()
+                try:
+                    pygame.mixer.Sound("markiplier.wav").play()
+                except pygame.error:
+                    pass
 
             #when score = 30 play wild hunt laughing
             if score == 30:
                 show_image2 = True
-                pygame.init()
-                pygame.mixer.init()
-                sound_effect = pygame.mixer.Sound("wild_hunt_laugh_limbus.wav")
-                sound_effect.play()
-                sound_effect.fadeout(2000)
+                try:
+                    pygame.mixer.Sound("wild_hunt_laugh_limbus.wav").play()
+                except pygame.error:
+                    pass
 
             if score == 67:
                 show_image4 = True
-                sound_effect = pygame.mixer.Sound("danteh.wav")
-                sound_effect.play()
-
-
-
-
-
+                try:
+                    pygame.mixer.Sound("danteh.wav").play()
+                except pygame.error:
+                    pass
 
             # TODO Task 6: Add sound effects HERE
-            #plays "hog rider" if ball hits paddle
-            pygame.init()
-            pygame.mixer.init()
-            sound_effect = pygame.mixer.Sound(f"hog-rider.wav")
-            sound_effect.play()
-            sound_effect.fadeout(2000)
-
+            #plays "hog rider" if ball hits paddle (only if not muted)
+            if not is_muted:
+                try:
+                    pygame.mixer.Sound("hog-rider.wav").play()
+                except pygame.error:
+                    pass
 
     # Ball collision with top boundary
     if ball.top <= 0:
@@ -149,7 +147,19 @@ def title_screen():
                 if singleplayer_button.collidepoint(event.pos):
                     game_state = "playing"
                 if mute_button.collidepoint(event.pos):
+                    # toggle mute and update music volume / stop sounds when muting
                     is_muted = not is_muted
+                    if is_muted:
+                        try:
+                            pygame.mixer.music.set_volume(0.0)
+                            pygame.mixer.stop()  # stop currently playing sound effects
+                        except Exception:
+                            pass
+                    else:
+                        try:
+                            pygame.mixer.music.set_volume(0.5)
+                        except Exception:
+                            pass
 
         screen.fill(bg_color)
 
@@ -170,7 +180,7 @@ def title_screen():
 
         # Singleplayer Button
         singleplayer_button = pygame.Rect(screen_width / 2 - 100, screen_height / 2 + 20, 200, 50)
-        button_color = light_grey if singleplayer_button.collidepoint(mouse_pos) else 'gray'
+        button_color = light_grey if singleplayer_button.collidepoint(mouse_pos) else pygame.Color('gray')
         pygame.draw.rect(screen, button_color, singleplayer_button)
         button_text = basic_font.render("Singleplayer", True, bg_color)
         button_text_rect = button_text.get_rect(center=singleplayer_button.center)
@@ -179,7 +189,7 @@ def title_screen():
         # Mute Button
         mute_button_text_str = "Unmute" if is_muted else "Mute Sound"
         mute_button = pygame.Rect(screen_width / 2 - 100, screen_height / 2 + 90, 200, 50)
-        mute_button_color = light_grey if mute_button.collidepoint(mouse_pos) else 'gray'
+        mute_button_color = light_grey if mute_button.collidepoint(mouse_pos) else pygame.Color('gray')
         pygame.draw.rect(screen, mute_button_color, mute_button)
         mute_button_text = basic_font.render(mute_button_text_str, True, bg_color)
         mute_button_text_rect = mute_button_text.get_rect(center=mute_button.center)
